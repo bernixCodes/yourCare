@@ -9,7 +9,7 @@ class Appointment extends Model
 {
     use HasFactory;
     protected $casts=[
-        'time' => 'datetime,H:i'
+        'time' => 'datetime'
     ];
 
     protected $guarded = [];

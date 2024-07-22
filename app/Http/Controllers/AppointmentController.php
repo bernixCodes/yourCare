@@ -21,7 +21,6 @@ class AppointmentController extends Controller
             $businessHours = BusinessHour::where('day', $dayName)->first();
 
             if ($businessHours) {
-                // Use the accessor to get the time periods
                 $hours = $businessHours->times_period;
 
                 $currentAppointments = Appointment::where('date', $date->toDateString())
@@ -37,6 +36,7 @@ class AppointmentController extends Controller
                     'date' => $date->format('d M'),
                     'full_date' => $date->format('Y-m-d'),
                     'available_hours' => $availableHours,
+                    'curent_appointments' => $currentAppointments
                     // 'off' => $businessHours->off
                 ];
             } else {
@@ -45,7 +45,7 @@ class AppointmentController extends Controller
                     'date' => $date->format('d M'),
                     'full_date' => $date->format('Y-m-d'),
                     'available_hours' => [],
-                    // 'off' => 1 // Assuming the day is off if no business hours are found
+                    // 'off' => 1 
                 ];
             }
         }
@@ -54,11 +54,7 @@ class AppointmentController extends Controller
     }
 
     public function reserve(Request $request){
-        dd($request->user());
-        // dd($request->all());
-
         $data = $request->merge(['user_id' =>auth()->id()])->toArray();
-        dd($data);
         Appointment::create($data);
         return response()->json(['msg'=> "You have successfully reserved at appointment"] );
     }

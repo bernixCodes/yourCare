@@ -15,10 +15,6 @@ class BusinessHourController extends Controller
     public function update(Request $request){
         $data = $request->all();
 
-        if (!is_array($data) || empty($data)) {
-            return back()->with('error', 'Invalid or empty data provided');
-        }
-    
         foreach ($data as $businessHour) {
             BusinessHour::updateOrCreate(
                 ['day' => $businessHour['day']], 
