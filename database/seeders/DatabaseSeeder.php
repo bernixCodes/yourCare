@@ -14,13 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::create([
-            'name' => 'user 1',
-            'email' => 'user@mail.com',
-            'password' => Hash::make('password'),
-        ]);
+       
         $this->call([BusinessHourSeeder::class]);
     }
 

@@ -8,6 +8,8 @@ use App\Models\BusinessHour;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationConfirmed;
 
 class AppointmentController extends Controller
 {
@@ -55,7 +57,16 @@ class AppointmentController extends Controller
 
     public function reserve(Request $request){
         $data = $request->merge(['user_id' =>auth()->id()])->toArray();
-        Appointment::create($data);
+        $appointment = Appointment::create($data);
+
+        $emailData = [
+            'user_name' => auth()->user()->name,
+            'date' => $appointment->date,
+            'time' => $appointment->time,
+            'location' => "https://meet.google.com/wtp-asxr-acv",
+        ];
+
+        Mail::to(auth()->user()->email)->send(new ReservationConfirmed($emailData));
         return response()->json(['msg'=> "You have successfully reserved at appointment"] );
     }
 }
