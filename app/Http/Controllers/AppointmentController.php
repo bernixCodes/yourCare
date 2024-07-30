@@ -61,12 +61,15 @@ class AppointmentController extends Controller
 
         $emailData = [
             'user_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
             'date' => $appointment->date,
             'time' => $appointment->time,
+            "appointment_id"=>$appointment->id,
             'location' => "https://meet.google.com/wtp-asxr-acv",
+            'payment_link' => route('payment', ['appointment_id' => $appointment->id]),
         ];
 
         Mail::to(auth()->user()->email)->send(new ReservationConfirmed($emailData));
-        return response()->json(['msg'=> "You have successfully reserved at appointment"] );
+        return response()->json(['msg'=> "Reservation made. Please check your email to complete payment."] );
     }
 }
